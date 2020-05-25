@@ -20,7 +20,7 @@ Clone or download the CORE-PI code.
 
 
 ## Running the examples
-Open the "main.m" function in Matlab, choose one example from the following list, set the desired
+Open the demo_start.m function in Matlab, choose one example from the following list, set the desired
 reduction factor (R), and run the code.
 
 ## Gel phantom demo - GE scanner
