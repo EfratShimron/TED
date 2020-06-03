@@ -3,17 +3,25 @@
 
 Demonstration for Temperature monitoring in MR-guided-HIFU scans
 -----------------------------------------------------------------------------------------
-Temporal Differences (TED) Compressed Sensing is a general method for accelerating dynamic MRI scans. TED combines k-space subsampling, parallel imaging, and the proposed Compressed Sensing reconstruction framework. The method is described in a manuscript that was submitted to journal NMR in Biomedicine (2020).
+Temporal Differences (TED) [1] Compressed Sensing is a dynamic MRI method that enables reconstruction from sub-sampled k-space data.
 
-In this toolbox, TED is demonstrated by implementation to data from MRI scans performed during High Intensity Focused Ultrasound (HIFU) treatments. However, TED is more general and can be applied to other k-t MRI data.
+TED assumes that k-space data is fully acquired in the baseline time frame (t=0), and reconstructs k-space data in later time frames. Here, TED is implemented for temperature estimation from MR-guided-HIFU acquisitions [1].
 
-This Matlab toolbox contains the TED code and two temperature reconstruction demos:
+
+TED is more general and can be applied to other dynamic MRI applications (such as cardiac MRI).
+
+If you find a cool implementation - let us know!
+
+ ============================================
+
+
+This Matlab toolbox contains two demos for temperature change reconstruction from MR-guided-HIFU data:
 1. Gel phantom data, acquiredw with a GE scanner.
 2. Agar phantom data, acquired with a Philips scanner.
 
-In both cases, fully sampled data was acquired in-vitro and then retrospectively subsampled offline using a practical 1D variable-density mask.
+In both cases, fully sampled data was acquired in-vitro and then retrospectively subsampled offline, so a reference temperature map is computed from the fully-sampled dataset.
 
-TED was compared with two well-established methods: *l*1-SPIRiT [1] and the K-space Hybrid Method [2].
+TED was compared with two well-established methods: *l*1-SPIRiT [2] and the K-space Hybrid Method [3].
 
 ## Getting Started
 Clone or download the CORE-PI code.
@@ -33,17 +41,20 @@ reduction factor (R), and run the code.
 
 
 ### Acknowledgments
+
+The TED toolbox was built upon the *l*1-SPIRiT toolbox that was created by Michael Lustig and is available at his website:
+http://people.eecs.berkeley.edu/~mlustig/Software.html
+
 The agar phantom data and the code for the K-space Hybrid Method are courtesy of Prof. William Grissom, Vanderbilt University, TA, USA.
 
-The gel phantom data is courtesy of Insightec Ltd., Tirat HaCarmel, Israel.
-
-The *l*1-SPIRiT code was reproduced from Michael Lustig's  toolbox (http://people.eecs.berkeley.edu/~mlustig/Software.html)
-
+The gel phantom data is courtesy of INSIGHTEC Ltd.
 
 ### Prerequisites
 A liscence for Matlab is required. The code was tested with Matlab2017R.
 
 ### References
-[1] Murphy M, et al. (2012) Fast l₁-SPIRiT compressed sensing parallel imaging MRI: scalable parallel implementation and clinically feasible runtime. IEEE TMI.
+[1] Shimron E., Grissom W., Azhari H. (2020) "Temporal Differences (TED) Compressed Sensing: A Method for Fast MRgHIFU Temperature Imaging", NMR in Biomedicine, in press.
 
-[2] Gaur P, Grissom WA. (2015) Accelerated MRI thermometry by direct estimation of temperature from undersampled k-space data. MRM.
+[2] Murphy M, et al. (2012) Fast l₁-SPIRiT compressed sensing parallel imaging MRI: scalable parallel implementation and clinically feasible runtime. IEEE TMI.
+
+[3] Gaur P, Grissom WA. (2015) Accelerated MRI thermometry by direct estimation of temperature from undersampled k-space data. MRM.
