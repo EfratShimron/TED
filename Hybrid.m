@@ -1,4 +1,4 @@
-function  [dT_zoomed_Gaur] = Hybrid(FullKspace,PARAMS,sampling_mask,t_jjj,lam)
+function  [dT_zoomed_Hybrid] = Hybrid(FullKspace,PARAMS,sampling_mask,t_jjj,lam)
 % This function implements the 'K-space Hybrid Method' for temperature
 % reconstruction, which was published in:
 %     Gaur, Pooja, and William A. Grissom. "Accelerated MRI thermometry by direct
@@ -131,6 +131,6 @@ algp.citers = 5;
                 thetakacc_rotated = imrotate(thetakacc,-180);
                 thetakacc_rotated_shifted = circshift(thetakacc_rotated,1);
         end
-        dT_Gaur = real(thetakacc_rotated_shifted)/PARAMS.CONST; % the "real()" was taken from Grissoms's code
-        dT_zoomed_Gaur = dT_Gaur(PARAMS.x1:PARAMS.x2,PARAMS.y1:PARAMS.y2);
+        dT_Hybrid = real(thetakacc_rotated_shifted)/PARAMS.CONST; % the "real()" was taken from Grissoms's code
+        dT_zoomed_Hybrid = dT_Hybrid(PARAMS.x1:PARAMS.x2,PARAMS.y1:PARAMS.y2);
 

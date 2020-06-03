@@ -53,8 +53,8 @@ classdef MRgHIFU
                     PARAMS.t_example = 5; % a time frame for plotting examples (for fully-sampled data)
                     PARAMS.t_rec_vec = 5; % time frames for dT reconstruction
               
-                    PARAMS.wavWeight_SPIRIT_vec = 0.00010;  % typical values for grid search:  %[1e-7 1e-6 1e-5 1e-4 0.0005 1e-3 0.0025 0.005 1e-2 0.025 0.05 ]; 
-                    PARAMS.wavWeight_TED_vec = 0.00045; % % typical values for grid search:  %[1e-7 1e-6 1e-5 1e-4 0.0005 1e-3 0.0025 0.005 1e-2 0.025 0.05 ]; 
+                    PARAMS.wavWeight_SPIRIT = 0.00010;  % typical values for grid search:  %[1e-7 1e-6 1e-5 1e-4 0.0005 1e-3 0.0025 0.005 1e-2 0.025 0.05 ]; 
+                    PARAMS.wavWeight_TED = 0.00045; % % typical values for grid search:  %[1e-7 1e-6 1e-5 1e-4 0.0005 1e-3 0.0025 0.005 1e-2 0.025 0.05 ]; 
                     PARAMS.nIter = 30; % number of Compressed Sensing iterations in TED and l1-SPIRiT
                     PARAMS.lam = 0.33*1e-3; % for k-space hybrid method
                     
@@ -84,8 +84,8 @@ classdef MRgHIFU
                     PARAMS.t_example = 20;         % a time frame for plotting examples (for fully-sampled data)
                     PARAMS.t_rec_vec = [18 22] % time frames for dT reconstruction
 
-                    PARAMS.wavWeight_SPIRIT_vec = 0.01;%  % typical values for grid search:  %[1e-7 1e-6 1e-5 1e-4 0.0005 1e-3 0.0025 0.005 1e-2 0.025 0.05 ]; 
-                    PARAMS.wavWeight_TED_vec = 0.005; %% typical values for grid search:  %[1e-7 1e-6 1e-5 1e-4 0.0005 1e-3 0.0025 0.005 1e-2 0.025 0.05 ]; 
+                    PARAMS.wavWeight_SPIRIT = 0.01;%  % typical values for grid search:  %[1e-7 1e-6 1e-5 1e-4 0.0005 1e-3 0.0025 0.005 1e-2 0.025 0.05 ]; 
+                    PARAMS.wavWeight_TED = 0.005; %% typical values for grid search:  %[1e-7 1e-6 1e-5 1e-4 0.0005 1e-3 0.0025 0.005 1e-2 0.025 0.05 ]; 
                     PARAMS.nIter = 30; %  number of Compressed Sensing iterations in TED and l1-SPIRiT
                     PARAMS.lam = 1e-6; % for k-space hybrid method                                                    
                     
@@ -363,9 +363,7 @@ classdef MRgHIFU
                         end
                         
                     end % for n=1:S.PARAMS.nIter
-                    
-                    t_SPIRIT = toc
-                
+                                    
                     % results to return
                     dT_rec = dT_SPIRIT;
                     dT_rec_zoomed = dT_zoomed_SPIRIT;
