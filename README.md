@@ -3,14 +3,15 @@
 
 Demonstration for Temperature Monitoring in MR-guided-HIFU scans
 -----------------------------------------------------------------------------------------
-Temporal Differences (TED) [1] Compressed Sensing is a dynamic MRI method that enables reconstruction from sub-sampled k-space data.
+Temporal Differences (TED) Compressed Sensing is a dynamic MRI method that enables reconstruction from sub-sampled k-space data.
+The TED paper is here: https://onlinelibrary.wiley.com/doi/abs/10.1002/nbm.4352
 
 TED assumes that k-space data is fully acquired in the baseline time frame (t=0), and reconstructs k-space data in later time frames. Here, TED is implemented for temperature estimation from MR-guided-HIFU acquisitions [1].
 
 
 TED is more general and can be applied to other dynamic MRI applications (such as cardiac MRI).
 
-If you find a cool implementation - let us know!
+If you find a cool implementation - let us know! 
 
  ============================================
 
@@ -42,7 +43,7 @@ reduction factor (R), and run the code.
 
 ### Acknowledgments
 
-The TED toolbox was built upon the *l*1-SPIRiT toolbox that was created by Michael Lustig and is available at his website:
+The TED toolbox was built upon the *l*1-SPIRiT toolbox that was created by Prof. Michael (Miki) Lustig and is available at his website:
 http://people.eecs.berkeley.edu/~mlustig/Software.html
 
 The agar phantom data and the code for the K-space Hybrid Method are courtesy of Prof. William Grissom, Vanderbilt University, TA, USA.
