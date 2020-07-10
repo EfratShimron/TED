@@ -1,7 +1,7 @@
 ----------------------------------------------------------------------------------------
 # A Matlab Toolbox for the Temporal Differences (TED) Compressed Sensing Method
 
-Demonstration for Temperature monitoring in MR-guided-HIFU scans
+Demonstration for Temperature Monitoring in MR-guided-HIFU scans
 -----------------------------------------------------------------------------------------
 Temporal Differences (TED) [1] Compressed Sensing is a dynamic MRI method that enables reconstruction from sub-sampled k-space data.
 
@@ -53,8 +53,8 @@ The gel phantom data is courtesy of INSIGHTEC Ltd.
 A liscence for Matlab is required. The code was tested with Matlab2017R.
 
 ### References
-[1] Shimron E., Grissom W., Azhari H. (2020) "Temporal Differences (TED) Compressed Sensing: A Method for Fast MRgHIFU Temperature Imaging", NMR in Biomedicine, in press.
+[1] Shimron E., Grissom W., Azhari H. (2020) "Temporal Differences (TED) Compressed Sensing: A Method for Fast MRgHIFU Temperature Imaging". *NMR in Biomedicine, in press*.
 
-[2] Murphy M, et al. (2012) Fast l₁-SPIRiT compressed sensing parallel imaging MRI: scalable parallel implementation and clinically feasible runtime. IEEE TMI.
+[2] Murphy M, et al. (2012) "Fast *l*₁-SPIRiT Compressed Sensing Parallel Imaging MRI: Scalable Parallel Implementation and Clinically Feasible Runtime". *IEEE TMI*.
 
-[3] Gaur P, Grissom WA. (2015) Accelerated MRI thermometry by direct estimation of temperature from undersampled k-space data. MRM.
+[3] Gaur P, Grissom WA. (2015) Accelerated MRI thermometry by Direct Estimation of Temperature from Undersampled K-space Data. *MRM*.

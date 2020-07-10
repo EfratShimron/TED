@@ -60,7 +60,7 @@ classdef MRgHIFU
                     
                     PARAMS.combined_complex_th_flag = 0;  % This flag is for the multi-coil phase merging. It should be 1 only for in-vivo data
                    
-                     % location of k-space data
+                    % location of k-space data
                     PARAMS.kspace_data_filename = 'MRgHIFU_data/Gel_phantom_kspace_data'
                     
                    % plotting params
@@ -72,7 +72,7 @@ classdef MRgHIFU
                     PARAMS.slices_for_recon = 1;                   
                     
                 case 'Agar_phantom_demo' % Grissom's data
-                    PARAMS.title = 'Agar phantom Philips';
+                    PARAMS.title = 'Agar phantom';
                     PARAMS.scanner_vendor = 'Philips';
                     
                     % Acquisition params
@@ -82,7 +82,7 @@ classdef MRgHIFU
                     
                     % Reconstruction params
                     PARAMS.t_example = 20;         % a time frame for plotting examples (for fully-sampled data)
-                    PARAMS.t_rec_vec = [18 22] % time frames for dT reconstruction
+                    PARAMS.t_rec_vec = [18 20 22]; % time frames for dT reconstruction  (other time frames can be chosen)
 
                     PARAMS.wavWeight_SPIRIT = 0.01;%  % typical values for grid search:  %[1e-7 1e-6 1e-5 1e-4 0.0005 1e-3 0.0025 0.005 1e-2 0.025 0.05 ]; 
                     PARAMS.wavWeight_TED = 0.005; %% typical values for grid search:  %[1e-7 1e-6 1e-5 1e-4 0.0005 1e-3 0.0025 0.005 1e-2 0.025 0.05 ]; 
@@ -143,9 +143,9 @@ classdef MRgHIFU
             load(S.PARAMS.kspace_data_filename)
 
             % The matrix FullKspace_all_slices has the following
-            % dimensions:
-            % X Y NT NC NSLICES
+            % dimensions: [N, N, NT, NC, NS]
             % where
+            % N = image size
             % NT = number of Time-frames that were acquired during MRgHIFU session
             % NC = Number of Coils
             % NS = Number of Slices
@@ -153,7 +153,7 @@ classdef MRgHIFU
             
             
             [NX,NY,NT,NC,NS]= size(S.FullKspace_all_slices);
-            S.PARAMS.N = NX;  % assuming that NX=NY, we define them as N
+            S.PARAMS.N = NX;  % assuming that NX=NY, we define them as N. If you have a non-square matrix, feel free to modify this.
             S.PARAMS.NT = NT;
             S.PARAMS.NC = NC;
             S.PARAMS.NS = NS;
@@ -469,19 +469,6 @@ classdef MRgHIFU
                 % compute y/|y|
                 unity = y./(repmat(absy,[1,1,size(y,3)])+eps);
                 
-                % % ----
-                % % figure; imagesc(absy);colorbar; title('absy')
-                % a = absy.*(absy<t);
-                % % if length(find(absy<t))==0
-                % %     error('SoftTh func - there are no values below threshold!')
-                % % end
-                %
-                % % figure; imagesc(a); colorbar; title('absy<t') % for debuggning - noise estimation
-                % res0 = absy-t; % for debugging only
-                % res1 = (res0 + abs(res0))/2; % for debugging only
-                % res_diff = res1 - res0; % for debugging only
-                % % ------
-                
                 % compute max(0,abs(y)-threshold)
                 res = absy-t;
                 res = (res + abs(res))/2;
@@ -576,16 +563,17 @@ classdef MRgHIFU
                         end % for tt
                         MAT_tmp = [MAT_tmp; MAT_row];
                     end % for row
-                    figure
-                    imagesc(squeeze(MAT_tmp))
-                    axis equal; axis tight; axis off;
-                    caxis([S.PARAMS.cmin S.PARAMS.cmax]);%caxis([-30 30])
-                    colormap jet
-                    c = colorbar;
-                    c.Label.String = '[^oC]';
-                    %title(['t_i_n_d=',num2str(t_ind)])
-                    suptitle([S.PARAMS.title,' slice #',num2str(slice),' \DeltaT (full-samp)']) % from t=',num2str(t_baseline),' (baseline) to t=',num2str(t_ind)])
-                    axis image
+
+%                     figure
+%                     imagesc(squeeze(MAT_tmp))
+%                     axis equal; axis tight; axis off;
+%                     caxis([S.PARAMS.cmin S.PARAMS.cmax]);%caxis([-30 30])
+%                     colormap jet
+%                     c = colorbar;
+%                     c.Label.String = '[^oC]';
+%                     %title(['t_i_n_d=',num2str(t_ind)])
+%                     suptitle([S.PARAMS.title,' slice #',num2str(slice),' \DeltaT (full-samp)']) % from t=',num2str(t_baseline),' (baseline) to t=',num2str(t_ind)])
+%                     axis image
                     
                     cnt = cnt + 1;
                     

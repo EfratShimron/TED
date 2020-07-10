@@ -13,9 +13,13 @@ addpath(genpath(pwd))
 % ------------------------------------------------------------------------
 % This is a Matlab toolbox for the Temporal Differences (TED) Compressed
 % Sensing methods, published in this paper:
+%
 %       E. Shimron, W. Grissom, H. Azhari, "Temporal Differences (TED) Compressed
 %       Sensing: A Method for Fast MRgHIFU Temperature Imaging",
-%       Accepted for publication NMR in Biomedicine (May 2020)
+%       Accepted for publication NMR in Biomedicine (July 2020)
+%
+% The paper is here:
+%       https://onlinelibrary.wiley.com/doi/abs/10.1002/nbm.4352
 % -------------------------------------------------------------------------
 
 % This toolbox includes two demos:
@@ -31,7 +35,7 @@ addpath(genpath(pwd))
 % If you publish an interesting implementation - let us know! :-) 
 
 % (c) Efrat Shimron, 2020 
-% Contact: efrat.s@berkeley.edu  or efrat_shimron@gmail.com
+% Contact: efrat.shimron@gmail.com or efrat.s@berkeley.edu  
 % Twitter: @Efrat_Shimron
 
 
@@ -61,15 +65,31 @@ addpath(genpath(pwd))
 % #################################################################
 % 1. Computing the temperature and the reconstruction error in each
 %    iteration really slows down the code, so the code can be made faster
-%    by setting calc_error_per_iter_flag=0
+%    by setting calc_error_per_iter_flag to 0. 
 % 2. The runtime can be shortened by running the code on GPUs, and using
 % "parfor" wherever there is a for loop, especially inside the functions
 % fftc and ifftc!
 
 
+% #################################################################
+%                        Variables
+% #################################################################
+% R_vec         -  Reduction factors 
+% dT_           - this suffix denotes the **temperature change** (i.e. temp difference)
+%                 between a specific time frame (which has index t_ind) and the baseline time
+%                 frame (which always has index t_ind==1)
+% dT_gold_MAT   - Reference (gold standard) temperature change maps, calculated from
+%                 fully-sampled data.
+% dT_TED_MAT    - TED temperature change maps, calculated from sub-sampled data 
+% dT_SPIRIT_MAT - l1-SPIRIT temperature change maps, calculated from sub-sampled data 
 
-demo = 'Gel_phantom_demo'; % Insightec's phantom data
-%demo = 'Agar_phantom_demo'; % Grissom's data
+
+% #################################################################
+%               Demos - choose (uncomment) one of the following
+% #################################################################
+
+demo = 'Gel_phantom_demo'; 
+%demo = 'Agar_phantom_demo'; 
 
 
 SPIRIT_flag = 1;             % set to 1 if you want to run the l1-SPIRiT method
@@ -94,15 +114,16 @@ end
 
 % ==================== Initialize MRgHIFU object ==========================
 
-S = MRgHIFU(demo,R_vec);  % initialize an object of class "MRgHIFU_Series"
+% initialize an object of class "MRgHIFU_Series"
+S = MRgHIFU(demo,R_vec);  
 
-
-S.FLAGS.dT_positivity = 1;  
-% This flag is used to enable for a fair comparison with the k-space
+% The following flag is used to enable a fair comparison with the k-space
 % hybrid method, which can reconstruct only non-negative temperature
-% changes. In TED, we first reconstruct the temp change (dT), and if this
-% flag equals 1 we then null all pixels with a negative phase change. 
-% However, this step is not mandatory for the TED method, 
+% changes. TED computes both negative and non-negative temp change maps (dT), 
+% If this flag equals 1, after the TED computation ends we set all pixels
+% with a negative phase change to 0. Importantly, this step is made only for
+% comparison with the Hybrid method, and it is not necessary for TED. 
+S.FLAGS.dT_positivity = 1;  
 
 
 
@@ -118,11 +139,14 @@ S = display_all_slices(S); % data is without scaling!
 % initialize
 num_slices = length(S.PARAMS.slices_for_recon);
 
-dT_gold_MAT = zeros(S.PARAMS.N,S.PARAMS.N,length(R_vec),S.PARAMS.NS,S.PARAMS.NT);
-dT_TED_MAT = zeros(S.PARAMS.N,S.PARAMS.N,length(R_vec),S.PARAMS.NS,S.PARAMS.NT);
-dT_SPIRIT_MAT = zeros(S.PARAMS.N,S.PARAMS.N,length(R_vec),S.PARAMS.NS,S.PARAMS.NT);
+% dT_gold_MAT = zeros(S.PARAMS.N,S.PARAMS.N,length(R_vec),S.PARAMS.NS,S.PARAMS.NT);
+% dT_TED_MAT = zeros(S.PARAMS.N,S.PARAMS.N,length(R_vec),S.PARAMS.NS,S.PARAMS.NT);
+% dT_SPIRIT_MAT = zeros(S.PARAMS.N,S.PARAMS.N,length(R_vec),S.PARAMS.NS,S.PARAMS.NT);
+dT_gold_MAT = zeros(S.PARAMS.N,S.PARAMS.N,length(R_vec),S.PARAMS.NT,S.PARAMS.NS);
+dT_TED_MAT = zeros(S.PARAMS.N,S.PARAMS.N,length(R_vec),S.PARAMS.NT,S.PARAMS.NS);
+dT_SPIRIT_MAT = zeros(S.PARAMS.N,S.PARAMS.N,length(R_vec),S.PARAMS.NT,S.PARAMS.NS);
 
-dT_gold_zoomed_MAT = zeros(S.PARAMS.x2 - S.PARAMS.x1+1,S.PARAMS.y2 - S.PARAMS.y1+1,length(R_vec),S.PARAMS.NS,S.PARAMS.NT);
+a = zeros(S.PARAMS.x2 - S.PARAMS.x1+1,S.PARAMS.y2 - S.PARAMS.y1+1,length(R_vec),S.PARAMS.NS,S.PARAMS.NT);
 %dT_TED_zoomed_MAT = zeros(S.PARAMS.x2 - S.PARAMS.x1+1,S.PARAMS.y2 - S.PARAMS.y1+1,length(R_vec),S.PARAMS.NS,S.PARAMS.NT);
 %dT_SPIRIT_zoomed_MAT = zeros(S.PARAMS.x2 - S.PARAMS.x1+1,S.PARAMS.y2 - S.PARAMS.y1+1,length(R_vec),S.PARAMS.NS,S.PARAMS.NT);
 
@@ -139,7 +163,7 @@ for slice_i =  1:num_slices
             
             S = scale_and_calc_GOP(S);
             
-            % ======================= loop over t_ind ============================
+            % ======================= loop over t_ind (time frame index)============================
             for t_jjj = 1:length(S.PARAMS.t_rec_vec)
                 t_ind = S.PARAMS.t_rec_vec(t_jjj);
                 
@@ -166,8 +190,10 @@ for slice_i =  1:num_slices
                 
                 % ============== compute dT gold =========================
                 [S.dT_gold,S.dT_gold_zoomed] = TempCalc_v2(FullKsapce_t_baseline,FullKsapce_t_HIFU,S);
-                dT_gold_MAT(:,:,R_i,slice_i,t_jjj) = S.dT_gold;
-                dT_gold_zoomed_MAT(:,:,R_i,slice_i,t_jjj) = S.dT_gold_zoomed;
+               % dT_gold_MAT(:,:,R_i,slice_i,t_jjj) = S.dT_gold;
+               % dT_gold_zoomed_MAT(:,:,R_i,slice_i,t_jjj) = S.dT_gold_zoomed;
+                dT_gold_MAT(:,:,R_i,t_jjj,slice_i) = S.dT_gold;
+                dT_gold_zoomed_MAT(:,:,R_i,t_jjj,slice_i) = S.dT_gold_zoomed;
                 
                 
                 
@@ -333,8 +359,8 @@ switch demo
         t_jjj_tmp = find(S.PARAMS.t_example==S.PARAMS.t_rec_vec); % time frame index
         
         % extract the temp maps from arrays
-        gold_full_FOV = dT_gold_MAT(:,:,R_i_wanted,slice_i,t_jjj_tmp);
-        TED_full_FOV = dT_TED_MAT(:,:,R_i_wanted,slice_i,t_jjj_tmp);
+        gold_full_FOV = dT_gold_MAT(:,:,R_i_wanted,t_jjj_tmp,slice_i);
+        TED_full_FOV = dT_TED_MAT(:,:,R_i_wanted,t_jjj_tmp,slice_i);
         
 %         % gold standard 
 %         figure; 
@@ -361,7 +387,7 @@ switch demo
         % gold standard & TED
         V_SPACE = -20*ones(S.PARAMS.N,5); % vertical space for image separation
         
-        cat_MAT = [gold_full_FOV  V_SPACE TED_full_FOV];
+        cat_MAT = [gold_full_FOV  V_SPACE   TED_full_FOV];
         
         figure;
         imagesc(cat_MAT)
@@ -373,6 +399,5 @@ switch demo
         title('Reference (gold standard)  ;        TED map                  ')
         
 end
-
 
 
