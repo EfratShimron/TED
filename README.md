@@ -39,11 +39,11 @@ reduction factor (R), and run the code.
 
 ## Demo 1 - gel phantom - expected output:
 
-[<img src="README_figures/gel_phantom.jpg" width="450" >](README_figures/gel_phantom.jpg)
+[<img src="README_figures/gel_phantom.jpg" width="600" >](README_figures/gel_phantom.jpg)
 
 ## Demo 2 - agar phantom - expected output:
 
-[<img src="README_figures/agar_phantom.jpg" width="450" >](README_figures/agar_phantom.jpg)
+[<img src="README_figures/agar_phantom.jpg" width="600" >](README_figures/agar_phantom.jpg)
 
 ### Acknowledgments
 
