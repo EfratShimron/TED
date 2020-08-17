@@ -19,13 +19,12 @@ This Matlab toolbox contains an implementation of the TED  algorithm [1] and dem
 1. Gel phantom data (GE scanner).
 2. Agar phantom data (Philips scanner).
 
-In both cases, fully sampled data was acquired in-vitro and then retrospectively subsampled offline, so a reference temperature map is computed from the fully-sampled dataset.
+In both cases, fully sampled data was acquired in-vitro and then retrospectively subsampled offline. A reference (gold standard) temperature map was computed from the fully-sampled dataset, and the TED reconstruction was computed from sub-sampled data.
 
 TED is compared with two well-established methods: *l*1-SPIRiT [2] and the K-space Hybrid Method [3].
 
 ## Generalizability
-Although we proposed TED for temperature reconstruction, In fact, TED is a *general* dynamic MRI method and can hence be implemented to other dynamic MRI applications, such as cardiac MRI.
-If you find a cool implementation - let us know!
+While we proposed TED for temperature reconstruction, TED is in fact a *general* dynamic MRI method. It can hence be implemented to other dynamic MRI applications, such as cardiac MRI. If you find a cool implementation - let us know!
 
 ### Prerequisites
 Matlab is required. The code was tested with Matlab2017R.
@@ -38,14 +37,13 @@ Clone or download the code.
 Open the demo_start.m function in Matlab, choose one example from the following list, set the desired
 reduction factor (R), and run the code.
 
-## Gel phantom demo - expected output:
+## Demo 1 - gel phantom - expected output:
 
-![demo1](README_figures/gel_phantom.jpg)
+[<img src="README_figures/gel_phantom.jpg" width="350" >](README_figures/gel_phantom.jpg)
 
-## Agar phantom demo - expected output:
+## Demo 2 - agar phantom - expected output:
 
-![demo1](README_figures/agar_phantom.jpg)
-
+[<img src="README_figures/agar_phantom.jpg" width="350" >](README_figures/agar_phantom.jpg)
 
 ### Acknowledgments
 
@@ -56,6 +54,12 @@ The agar phantom data and the code for the K-space Hybrid Method are courtesy of
 
 The gel phantom data is courtesy of INSIGHTEC Ltd.
 
+### Contact
+If you have any questions or if you found a cool app of TED and want to let us know, please contact me:
+Efrat Shimron, ![demo3](README_figures/es_email.PNG).
+
+You can also see my other projects here:
+https://sites.google.com/view/efratshimron/home
 
 ### References
 [1] Shimron E., Grissom W., Azhari H. (2020) "Temporal Differences (TED) Compressed Sensing: A Method for Fast MRgHIFU Temperature Imaging". *NMR in Biomedicine, in press*.
