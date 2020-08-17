@@ -39,11 +39,11 @@ reduction factor (R), and run the code.
 
 ## Demo 1 - gel phantom - expected output:
 
-[<img src="README_figures/gel_phantom.jpg" width="350" >](README_figures/gel_phantom.jpg)
+[<img src="README_figures/gel_phantom.jpg" width="450" >](README_figures/gel_phantom.jpg)
 
 ## Demo 2 - agar phantom - expected output:
 
-[<img src="README_figures/agar_phantom.jpg" width="350" >](README_figures/agar_phantom.jpg)
+[<img src="README_figures/agar_phantom.jpg" width="450" >](README_figures/agar_phantom.jpg)
 
 ### Acknowledgments
 
@@ -56,7 +56,7 @@ The gel phantom data is courtesy of INSIGHTEC Ltd.
 
 ### Contact
 If you have any questions or if you found a cool app of TED and want to let us know, please contact me:
-Efrat Shimron, ![demo3](README_figures/es_email.PNG).
+Efrat Shimron, ![demo3](README_figures/es_email.PNG)
 
 You can also see my other projects here:
 https://sites.google.com/view/efratshimron/home
